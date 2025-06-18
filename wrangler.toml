@@ -1,0 +1,7 @@
+name = "my-vite-app"
+compatibility_date = "2023-08-16"
+pages_build_output_dir = "dist"
+
+# Add this to disable Functions
+[functions]
+enabled = false
