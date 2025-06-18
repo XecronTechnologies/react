@@ -1,8 +1,11 @@
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2014367403.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2641438493.
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:3847013376.
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-
+// This is a standalone React component for a restaurant website.
 const RestaurantWebsite = () => {
   const [activeNav, setActiveNav] = useState('#home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,6 +16,7 @@ const RestaurantWebsite = () => {
     message: ''
   });
   const [scrolled, setScrolled] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +24,14 @@ const RestaurantWebsite = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleScrollTopButton = () => {
+      setShowScrollToTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScrollTopButton);
+    return () => window.removeEventListener('scroll', handleScrollTopButton);
   }, []);
 
   const handleNavClick = (navItem) => {
@@ -98,6 +110,11 @@ const RestaurantWebsite = () => {
       email: '',
       message: ''
     });
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setActiveNav('#home'); // Optionally reset nav to home
   };
 
   return (
@@ -658,6 +675,25 @@ const RestaurantWebsite = () => {
           </div>
         </footer>
       </div>
+
+      {/* Scroll to Top Button */}
+      <AnimatePresence>
+        {showScrollToTop && (
+          <motion.button
+            className="fixed bottom-8 right-8 bg-amber-400 text-gray-900 p-3 rounded-full shadow-lg hover:bg-amber-300 transition-colors duration-300 z-50"
+            onClick={scrollToTop}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </>
     </HelmetProvider>
   );
